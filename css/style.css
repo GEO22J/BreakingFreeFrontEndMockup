@@ -437,6 +437,7 @@ body {
   }
 
   .card--quota,
+  .card--message,
   .card--activity {
     grid-column: 1 / -1;
   }
