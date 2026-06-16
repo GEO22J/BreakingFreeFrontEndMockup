@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BreakingFree — Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header__brand">
+        <span class="header__logo" aria-hidden="true">⬡</span>
+        <span class="header__title">BreakingFree</span>
+      </div>
+      <nav class="header__steps" aria-label="Progress">
+        <span class="step-indicator" data-step="1">1. Wallet</span>
+        <span class="step-indicator" data-step="2">2. Email</span>
+        <span class="step-indicator" data-step="3">3. Setup</span>
+        <span class="step-indicator" data-step="4">4. Dashboard</span>
+      </nav>
+    </header>
+
+    <main class="main">
+      <!-- Page 1: Connect Wallet -->
+      <section id="page-wallet" class="page page--active" data-page="1">
+        <div class="card card--centered">
+          <div class="card__icon card__icon--wallet" aria-hidden="true">⬡</div>
+          <h1>Connect your Polygon wallet</h1>
+          <p class="card__subtitle">
+            Link your wallet to access the platform. We use Polygon for fast, low-cost transactions.
+          </p>
+
+          <div id="wallet-status" class="wallet-status wallet-status--disconnected">
+            <span class="wallet-status__dot"></span>
+            <span id="wallet-status-text">Not connected</span>
+          </div>
+
+          <div id="wallet-address-display" class="wallet-address hidden">
+            <span class="wallet-address__label">Connected address</span>
+            <code id="wallet-address-value"></code>
+          </div>
+
+          <button type="button" id="btn-connect-wallet" class="btn btn--primary btn--full">
+            Connect Polygon Wallet
+          </button>
+
+          <button type="button" id="btn-wallet-continue" class="btn btn--secondary btn--full hidden">
+            Continue to registration
+          </button>
+
+          <p class="card__hint">Mock mode — no real wallet connection required.</p>
+        </div>
+      </section>
+
+      <!-- Page 2: Email Registration -->
+      <section id="page-email" class="page" data-page="2">
+        <div class="card card--centered">
+          <h1>Create your account</h1>
+          <p class="card__subtitle">
+            Register with your email to complete setup. Your wallet
+            <code id="email-wallet-preview" class="inline-code">—</code>
+            will be linked to this account.
+          </p>
+
+          <form id="email-form" class="form" novalidate>
+            <div class="form__group">
+              <label for="email">Email address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              >
+            </div>
+
+            <div class="form__group">
+              <label for="display-name">Display name</label>
+              <input
+                type="text"
+                id="display-name"
+                name="displayName"
+                placeholder="Your name"
+                autocomplete="name"
+                required
+              >
+            </div>
+
+            <div class="form__group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+            </div>
+
+            <div class="form__group">
+              <label for="confirm-password">Confirm password</label>
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                autocomplete="new-password"
+                required
+              >
+            </div>
+
+            <p id="email-form-error" class="form__error hidden" role="alert"></p>
+
+            <button type="submit" class="btn btn--primary btn--full">
+              Register &amp; continue
+            </button>
+          </form>
+
+          <button type="button" class="btn btn--ghost btn--full" data-nav="1">
+            ← Back to wallet
+          </button>
+        </div>
+      </section>
+
+      <!-- Page 3: Setup Complete -->
+      <section id="page-setup" class="page" data-page="3">
+        <div class="card card--centered">
+          <div class="card__icon card__icon--success" aria-hidden="true">✓</div>
+          <h1>You're all set!</h1>
+          <p class="card__subtitle">
+            Welcome, <strong id="setup-display-name">User</strong>. Your account is ready.
+          </p>
+
+          <ul class="setup-summary">
+            <li>
+              <span class="setup-summary__label">Wallet</span>
+              <code id="setup-wallet" class="inline-code">—</code>
+            </li>
+            <li>
+              <span class="setup-summary__label">Email</span>
+              <span id="setup-email">—</span>
+            </li>
+            <li>
+              <span class="setup-summary__label">Daily quota</span>
+              <span id="setup-quota">100 messages / day</span>
+            </li>
+          </ul>
+
+          <button type="button" class="btn btn--primary btn--full" data-nav="4">
+            Go to dashboard
+          </button>
+        </div>
+      </section>
+
+      <!-- Page 4: Dashboard -->
+      <section id="page-dashboard" class="page" data-page="4">
+        <div class="dashboard-header">
+          <div>
+            <h1>Dashboard</h1>
+            <p class="dashboard-header__meta">
+              Signed in as <strong id="dash-display-name">User</strong>
+              · <code id="dash-wallet" class="inline-code">—</code>
+            </p>
+          </div>
+          <button type="button" id="btn-disconnect" class="btn btn--ghost btn--sm">
+            Disconnect
+          </button>
+        </div>
+
+        <div class="dashboard-grid">
+          <!-- Daily Quota -->
+          <article class="card card--quota">
+            <h2>Daily quota</h2>
+            <p class="card__subtitle">Your messaging allowance resets at midnight UTC.</p>
+
+            <div class="quota-stats">
+              <div class="quota-stat">
+                <span class="quota-stat__value" id="quota-used">0</span>
+                <span class="quota-stat__label">Used today</span>
+              </div>
+              <div class="quota-stat quota-stat--highlight">
+                <span class="quota-stat__value" id="quota-remaining">100</span>
+                <span class="quota-stat__label">Remaining</span>
+              </div>
+              <div class="quota-stat">
+                <span class="quota-stat__value" id="quota-total">100</span>
+                <span class="quota-stat__label">Daily limit</span>
+              </div>
+            </div>
+
+            <div class="quota-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div id="quota-bar-fill" class="quota-bar__fill" style="width: 0%"></div>
+            </div>
+          </article>
+
+          <!-- Send Message -->
+          <article class="card card--message">
+            <h2>Send a message</h2>
+            <p class="card__subtitle">Enter a recipient user ID and your message below.</p>
+
+            <form id="message-form" class="form">
+              <div class="form__group">
+                <label for="recipient-id">Recipient user ID</label>
+                <input
+                  type="text"
+                  id="recipient-id"
+                  name="recipientId"
+                  placeholder="e.g. user_abc123"
+                  required
+                >
+              </div>
+
+              <div class="form__group">
+                <label for="message-body">Message</label>
+                <textarea
+                  id="message-body"
+                  name="message"
+                  rows="4"
+                  placeholder="Write your message here…"
+                  maxlength="500"
+                  required
+                ></textarea>
+                <span class="form__char-count"><span id="char-count">0</span> / 500</span>
+              </div>
+
+              <p id="message-form-error" class="form__error hidden" role="alert"></p>
+              <p id="message-form-success" class="form__success hidden" role="status"></p>
+
+              <button type="submit" class="btn btn--primary btn--full" id="btn-send-message">
+                Send message
+              </button>
+            </form>
+          </article>
+
+          <!-- Recent activity (mock) -->
+          <article class="card card--activity">
+            <h2>Recent activity</h2>
+            <ul id="activity-list" class="activity-list">
+              <li class="activity-list__empty">No messages sent yet.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>BreakingFree — Frontend mockup · Polygon wallet integration coming soon</p>
+    </footer>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
